@@ -87,3 +87,11 @@ target/
 
 # Mypy cache
 .mypy_cache/
+
+# virtual environment
+.venv/
+venv/
+
+# datasets directory 
+src/data/accidents_data/
+
