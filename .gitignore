@@ -95,3 +95,32 @@ venv/
 # datasets directory 
 src/data/accidents_data/
 
+# Python cache files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv_accidents
+
+# Environment file with sensitive data
+.env
+
+# Git and CI/CD workflow files
+.git
+.github
+*.gitignore
+
+# Jupyter Notebook checkpoints and cache
+.ipynb_checkpoints
+
+# Dataset and test data
+src/data/accidents_data
+
+# Other unnecessary files and folders (e.g., local reports and intermediate files)
+reports/
+notebooks/
+
+# Dockerignore file itself
+.dockerignore
