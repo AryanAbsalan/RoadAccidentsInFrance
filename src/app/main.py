@@ -1,5 +1,4 @@
 import os
-import random
 from datetime import datetime, timedelta, timezone
 from typing import List, Annotated, Optional
 
@@ -13,16 +12,23 @@ from sqlmodel import SQLModel, Field, create_engine, Session, select,Relationshi
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import text
 from pydantic import BaseModel
-
+from src.app.model_handler import ModelHandler
 from dotenv import load_dotenv
+
 
 # Load environment variables from .env file
 load_dotenv()
 
+# Read model path from environment variables and initialize model_handler globally
+model_path = os.getenv("MODEL_PATH", "models/model.joblib")
+model_handler = ModelHandler(model_path)
+
+
 # Read database configuration from environment variables
 MYSQL_USER = os.getenv("MYSQL_USER", "root")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "rootpass")
-MYSQL_HOST = os.getenv("MYSQL_HOST", "db")
+MYSQL_HOST = os.getenv("MYSQL_HOST", "db") # for testing with docker container
+# MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost") # for testing locally
 MYSQL_PORT = os.getenv("MYSQL_PORT", "3306")
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "roadaccidentsinfrance")
 
@@ -116,12 +122,6 @@ class PredictionInput(BaseModel):
     Road_Profile: int
     User_Category:int
     Intersection_Type:int
-
-
-# Dummy model for prediction (this is just an example, we replace it with a real ML model)
-def mock_model_predict() -> int:
-    prediction = random.randint(1, 4)
-    return prediction
 
 # Utility function to verify password
 def verify_password(plain_password, hashed_password):
@@ -315,7 +315,7 @@ def get_prediction(current_user: Annotated[UserModel, Depends(get_current_active
     Steps:
         1. Validates that the user is logged in using the `get_current_active_user` dependency.
         2. Extracts input data from the `PredictionInput` model, which includes various characteristics of the accident scenario.
-        3. Calls a mock prediction function to generate a predicted severity based on the input data.
+        3. Calls a prediction function to generate a predicted severity based on the input data.
             - This should be replaced with an actual prediction model in a production environment.
         4. Creates a new entry in the `PredictionModel` with the input data, predicted severity, the current timestamp, and the ID of the logged-in user.
         5. Adds the new prediction record to the database and commits the transaction.
@@ -323,45 +323,47 @@ def get_prediction(current_user: Annotated[UserModel, Depends(get_current_active
         7. Returns a JSON response containing the predicted severity, the record ID, and the username of the current user.
     """
     # Extract input values
-    Driver_Age= data.Driver_Age
-    Safety_Equipment= data.Safety_Equipment
-    Department_Code= data.Department_Code 
-    Day_of_Week= data.Day_of_Week
-    Vehicle_Category= data.Vehicle_Category
-    Vehicle_Manoeuvre= data.Vehicle_Manoeuvre
-    Collision_Type= data.Collision_Type 
-    Number_of_Lanes= data.Number_of_Lanes 
-    Time_of_Day= data.Time_of_Day 
-    Journey_Type= data.Journey_Type 
-    Lighting_Conditions= data.Lighting_Conditions 
-    Road_Category= data.Road_Category 
-    Road_Profile= data.Road_Profile
-    User_Category= data.User_Category
-    Intersection_Type= data.Intersection_Type
- 
-    # Get prediction from the mock model (or replace with a real model)
-    predicted_severity = mock_model_predict()
+    features = [
+        data.Driver_Age,
+        data.Safety_Equipment,
+        data.Department_Code,
+        data.Day_of_Week,
+        data.Vehicle_Category,
+        data.Vehicle_Manoeuvre,
+        data.Collision_Type,
+        data.Number_of_Lanes,
+        data.Time_of_Day,
+        data.Journey_Type,
+        data.Lighting_Conditions,
+        data.Road_Category,
+        data.Road_Profile,
+        data.User_Category,
+        data.Intersection_Type
+    ]
+    
+    # Get prediction from the model
+    predicted_severity = model_handler.predict(features)
+
+    print("\t\t\t ******* predicted_severity: " , predicted_severity)
     
     # Save to database
     prediction_entry = PredictionModel(
-        Driver_Age= Driver_Age,
-        Safety_Equipment= Safety_Equipment,
-        Department_Code= Department_Code, 
-        Day_of_Week= Day_of_Week,
-        Vehicle_Category= Vehicle_Category,
-        Vehicle_Manoeuvre= Vehicle_Manoeuvre,
-        Collision_Type= Collision_Type,
-        Number_of_Lanes= Number_of_Lanes, 
-        Time_of_Day= Time_of_Day, 
-        Journey_Type= Journey_Type,
-        Lighting_Conditions= Lighting_Conditions, 
-        Road_Category= Road_Category, 
-        Road_Profile= Road_Profile,
-        User_Category= User_Category,
-        Intersection_Type= Intersection_Type,
- 
+        Driver_Age=data.Driver_Age,
+        Safety_Equipment=data.Safety_Equipment,
+        Department_Code=data.Department_Code, 
+        Day_of_Week=data.Day_of_Week,
+        Vehicle_Category=data.Vehicle_Category,
+        Vehicle_Manoeuvre=data.Vehicle_Manoeuvre,
+        Collision_Type=data.Collision_Type,
+        Number_of_Lanes=data.Number_of_Lanes, 
+        Time_of_Day=data.Time_of_Day, 
+        Journey_Type=data.Journey_Type,
+        Lighting_Conditions=data.Lighting_Conditions, 
+        Road_Category=data.Road_Category, 
+        Road_Profile=data.Road_Profile,
+        User_Category=data.User_Category,
+        Intersection_Type=data.Intersection_Type,
         Predicted_Severity=predicted_severity,
-
         request_time=datetime.utcnow(),  # Time when the prediction is made
         user_id=current_user.id 
     )
@@ -371,4 +373,9 @@ def get_prediction(current_user: Annotated[UserModel, Depends(get_current_active
     db.refresh(prediction_entry)  # Refresh to get the updated object (with the id)
     
     # Return the prediction along with the record id and the username of the current user 
-    return {"predicted_severity": prediction_entry.Predicted_Severity, "id": prediction_entry.id, "user": current_user.username}
+    return {
+        "predicted_severity": prediction_entry.Predicted_Severity,
+        "id": prediction_entry.id,
+        "user": current_user.username
+    }
+    
