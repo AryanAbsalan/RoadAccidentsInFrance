@@ -19,14 +19,13 @@ from dotenv import load_dotenv
 from src.app.model_handler import ModelHandler
 
 
-
 # Load environment variables from .env file
 load_dotenv()
-
 
 # Read model path from environment variables and initialize model_handler globally
 model_path = os.getenv("MODEL_PATH", "models/model.joblib")
 model_handler = ModelHandler(model_path)
+
 
 # Read database configuration from environment variables
 MYSQL_USER = os.getenv("MYSQL_USER", "root")
@@ -126,12 +125,6 @@ class PredictionInput(BaseModel):
     Road_Profile: int
     User_Category:int
     Intersection_Type:int
-
-
-# Dummy model for prediction (this is just an example, we replace it with a real ML model)
-def mock_model_predict() -> int:
-    prediction = random.randint(1, 4)
-    return prediction
 
 # Utility function to verify password
 def verify_password(plain_password, hashed_password):
@@ -354,7 +347,7 @@ def get_prediction(current_user: Annotated[UserModel, Depends(get_current_active
     # Get prediction from the model
     predicted_severity = model_handler.predict(features)
 
-    print("\t\t\t predicted_severity" , predicted_severity)
+    print("\t\t\t ******* predicted_severity: " , predicted_severity)
     
     # Save to database
     prediction_entry = PredictionModel(
