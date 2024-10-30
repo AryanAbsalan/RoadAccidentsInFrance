@@ -1,5 +1,4 @@
 import os
-import random
 from datetime import datetime, timedelta, timezone
 from typing import List, Annotated, Optional
 
@@ -13,10 +12,8 @@ from sqlmodel import SQLModel, Field, create_engine, Session, select,Relationshi
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import text
 from pydantic import BaseModel
-
-from dotenv import load_dotenv
-
 from src.app.model_handler import ModelHandler
+from dotenv import load_dotenv
 
 
 # Load environment variables from .env file
@@ -30,8 +27,8 @@ model_handler = ModelHandler(model_path)
 # Read database configuration from environment variables
 MYSQL_USER = os.getenv("MYSQL_USER", "root")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "rootpass")
-# MYSQL_HOST = os.getenv("MYSQL_HOST", "db") docker compose : ok
-MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
+MYSQL_HOST = os.getenv("MYSQL_HOST", "db") # for testing with docker container
+# MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost") # for testing locally
 MYSQL_PORT = os.getenv("MYSQL_PORT", "3306")
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "roadaccidentsinfrance")
 

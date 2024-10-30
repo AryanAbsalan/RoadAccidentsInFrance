@@ -1,4 +1,3 @@
-import os
 import joblib
 from dotenv import load_dotenv
 from typing import Any
@@ -35,7 +34,3 @@ class ModelHandler:
         else:
             raise ValueError("Model is not loaded.")
 
-# Initialize the handler separately if needed
-def initialize_handler(model_path: str) -> ModelHandler:
-    """Initialize the ModelHandler with the model path."""
-    return ModelHandler(model_path)
