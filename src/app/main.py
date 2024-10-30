@@ -16,13 +16,44 @@ from pydantic import BaseModel
 
 from dotenv import load_dotenv
 
+from src.app.model_handler import ModelHandler
+import joblib
+
+
 # Load environment variables from .env file
 load_dotenv()
+
+
+
+
+# Create a custom model class
+class dummyModel():
+    def fit(self, X, y=None):
+        # The model doesn't need to fit anything, as it will return a random number
+        return self
+
+    def predict(self, X):
+        # Generate a random prediction between 1 and 4 for each input sample
+        return [random.randint(1, 4) for _ in range(len(X))]
+
+# Create an instance of the model
+model = dummyModel()
+
+# Save the model to a .joblib file
+model_path = "models/rf_model.joblib"
+joblib.dump(model, model_path)
+
+print(f"Model saved to {model_path}")
+
+# Read model path from environment variables and initialize model_handler globally
+model_path = os.getenv("MODEL_PATH", "models/rf_model.joblib")
+model_handler = ModelHandler(model_path)
 
 # Read database configuration from environment variables
 MYSQL_USER = os.getenv("MYSQL_USER", "root")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "rootpass")
-MYSQL_HOST = os.getenv("MYSQL_HOST", "db")
+# MYSQL_HOST = os.getenv("MYSQL_HOST", "db") docker compose : ok
+MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
 MYSQL_PORT = os.getenv("MYSQL_PORT", "3306")
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "roadaccidentsinfrance")
 
@@ -366,9 +397,70 @@ def get_prediction(current_user: Annotated[UserModel, Depends(get_current_active
         user_id=current_user.id 
     )
     
+    # db.add(prediction_entry)  # Add the new prediction record
+    # db.commit()  # Commit the changes to save it in the database
+    # db.refresh(prediction_entry)  # Refresh to get the updated object (with the id)
+
+    """
+    Generates a prediction for accident severity based on user input and saves it to the database.
+    """
+     # Extract input values
+    features = [
+        data.Driver_Age,
+        data.Safety_Equipment,
+        data.Department_Code,
+        data.Day_of_Week,
+        data.Vehicle_Category,
+        data.Vehicle_Manoeuvre,
+        data.Collision_Type,
+        data.Number_of_Lanes,
+        data.Time_of_Day,
+        data.Journey_Type,
+        data.Lighting_Conditions,
+        data.Road_Category,
+        data.Road_Profile,
+        data.User_Category,
+        data.Intersection_Type
+    ]
+    
+    # Get prediction from the model
+    predicted_severity = model_handler.predict(features)
+
+    print("\t\t\t predicted_severity" , predicted_severity)
+    
+    # Save to database
+    prediction_entry = PredictionModel(
+        Driver_Age=data.Driver_Age,
+        Safety_Equipment=data.Safety_Equipment,
+        Department_Code=data.Department_Code, 
+        Day_of_Week=data.Day_of_Week,
+        Vehicle_Category=data.Vehicle_Category,
+        Vehicle_Manoeuvre=data.Vehicle_Manoeuvre,
+        Collision_Type=data.Collision_Type,
+        Number_of_Lanes=data.Number_of_Lanes, 
+        Time_of_Day=data.Time_of_Day, 
+        Journey_Type=data.Journey_Type,
+        Lighting_Conditions=data.Lighting_Conditions, 
+        Road_Category=data.Road_Category, 
+        Road_Profile=data.Road_Profile,
+        User_Category=data.User_Category,
+        Intersection_Type=data.Intersection_Type,
+        Predicted_Severity=predicted_severity,
+        request_time=datetime.utcnow(),  # Time when the prediction is made
+        user_id=current_user.id 
+    )
+    
     db.add(prediction_entry)  # Add the new prediction record
     db.commit()  # Commit the changes to save it in the database
     db.refresh(prediction_entry)  # Refresh to get the updated object (with the id)
     
     # Return the prediction along with the record id and the username of the current user 
-    return {"predicted_severity": prediction_entry.Predicted_Severity, "id": prediction_entry.id, "user": current_user.username}
+    return {
+        "predicted_severity": prediction_entry.Predicted_Severity,
+        "id": prediction_entry.id,
+        "user": current_user.username
+    }
+    
+
+    # Return the prediction along with the record id and the username of the current user 
+    # return {"predicted_severity": prediction_entry.Predicted_Severity, "id": prediction_entry.id, "user": current_user.username}
