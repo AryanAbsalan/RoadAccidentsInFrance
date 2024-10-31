@@ -20,15 +20,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Read model path from environment variables and initialize model_handler globally
-model_path = os.getenv("MODEL_PATH", "models/model.joblib")
-model_handler = ModelHandler(model_path)
+model_path = os.getenv("MODEL_PATH", "models/decision_tree_model.joblib")
+preprocessor_path = os.getenv("PREPROCESSOR_PATH", "models/preprocessor.joblib")
+model_handler = ModelHandler(model_path, preprocessor_path)
 
 
 # Read database configuration from environment variables
 MYSQL_USER = os.getenv("MYSQL_USER", "root")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "rootpass")
-MYSQL_HOST = os.getenv("MYSQL_HOST", "db") # for testing with docker container
-# MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost") # for testing locally
+# MYSQL_HOST = os.getenv("MYSQL_HOST", "db") # for testing with docker container
+MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost") # for testing locally
 MYSQL_PORT = os.getenv("MYSQL_PORT", "3306")
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "roadaccidentsinfrance")
 
@@ -86,16 +87,16 @@ class PredictionModel(SQLModel, table=True):
     Driver_Age: int  # Age of the driver involved in the accident.
     Safety_Equipment: int  # Representing safety equipment used (e.g., seatbelt, helmet).
     Department_Code: int  # Indicating the regional department where the accident occurred.
-    Day_of_Week: int  # Day of the week when the accident occurred (e.g., 1=Monday, 7=Sunday).
+    Mobile_Obstacle: int  # Indicate a moving obstacle like another vehicle, animal, etc.
     Vehicle_Category: int  # Representing the type of vehicle (e.g., car, motorcycle, bicycle).
-    Vehicle_Manoeuvre: int  # Describing the maneuver of the vehicle before the accident (e.g., overtaking, turning).
+    Position_In_Vehicle: int  # Refers to the position of the individual in the vehicle (driver, front seat, rear seat).
     Collision_Type: int  # Indicating the type of collision (e.g., frontal, rear-end).
     Number_of_Lanes: int  # Number of lanes on the road where the accident occurred.
     Time_of_Day: int  # Encoded time segment during the day (e.g., morning, afternoon, night).
     Journey_Type: int  # Representing the purpose of the trip (e.g., commute, leisure).
-    Lighting_Conditions: int  # For lighting at the accident scene (e.g., daylight, street lighting).
+    Obstacle_Hit: int  # Obstacle hit by the vehicle (no obstacle, obstacle on the road, obstacle off the road).
     Road_Category: int  # Indicating the type of road (e.g., highway, local road).
-    Road_Profile: int  # Representing road elevation or gradient (e.g., flat, hilly).
+    Gender: int  # Gender of the individual (male and female).
     User_Category: int  # Describing the role of the user involved (e.g., driver, passenger, pedestrian).
     Intersection_Type: int  # Type of intersection where the accident took place (e.g., roundabout, crossroad).
     Predicted_Severity: int  # Representing the predicted severity of the accident (e.g., minor, severe, fatal).
@@ -110,16 +111,16 @@ class PredictionInput(BaseModel):
     Driver_Age:int
     Safety_Equipment:int
     Department_Code:int 
-    Day_of_Week:int
+    Mobile_Obstacle:int
     Vehicle_Category:int
-    Vehicle_Manoeuvre:int
+    Position_In_Vehicle:int
     Collision_Type:int 
     Number_of_Lanes:int 
     Time_of_Day:int 
     Journey_Type:int 
-    Lighting_Conditions:int 
+    Obstacle_Hit:int 
     Road_Category:int 
-    Road_Profile: int
+    Gender: int
     User_Category:int
     Intersection_Type:int
 
@@ -327,16 +328,16 @@ def get_prediction(current_user: Annotated[UserModel, Depends(get_current_active
         data.Driver_Age,
         data.Safety_Equipment,
         data.Department_Code,
-        data.Day_of_Week,
+        data.Mobile_Obstacle,
         data.Vehicle_Category,
-        data.Vehicle_Manoeuvre,
+        data.Position_In_Vehicle,
         data.Collision_Type,
         data.Number_of_Lanes,
         data.Time_of_Day,
         data.Journey_Type,
-        data.Lighting_Conditions,
+        data.Obstacle_Hit,
         data.Road_Category,
-        data.Road_Profile,
+        data.Gender,
         data.User_Category,
         data.Intersection_Type
     ]
@@ -351,16 +352,16 @@ def get_prediction(current_user: Annotated[UserModel, Depends(get_current_active
         Driver_Age=data.Driver_Age,
         Safety_Equipment=data.Safety_Equipment,
         Department_Code=data.Department_Code, 
-        Day_of_Week=data.Day_of_Week,
+        Mobile_Obstacle=data.Mobile_Obstacle,
         Vehicle_Category=data.Vehicle_Category,
-        Vehicle_Manoeuvre=data.Vehicle_Manoeuvre,
+        Position_In_Vehicle=data.Position_In_Vehicle,
         Collision_Type=data.Collision_Type,
         Number_of_Lanes=data.Number_of_Lanes, 
         Time_of_Day=data.Time_of_Day, 
         Journey_Type=data.Journey_Type,
-        Lighting_Conditions=data.Lighting_Conditions, 
+        Obstacle_Hit=data.Obstacle_Hit, 
         Road_Category=data.Road_Category, 
-        Road_Profile=data.Road_Profile,
+        Gender=data.Gender,
         User_Category=data.User_Category,
         Intersection_Type=data.Intersection_Type,
         Predicted_Severity=predicted_severity,
