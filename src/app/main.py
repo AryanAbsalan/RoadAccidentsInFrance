@@ -13,17 +13,21 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import text
 from pydantic import BaseModel
 from src.app.model_handler import ModelHandler
+import joblib
 from dotenv import load_dotenv
 
 
 # Load environment variables from .env file
 load_dotenv()
 
-# Read model path from environment variables and initialize model_handler globally
+# Read model path from environment variables and initialize model_handler
 model_path = os.getenv("MODEL_PATH", "models/decision_tree_model.joblib")
 preprocessor_path = os.getenv("PREPROCESSOR_PATH", "models/preprocessor.joblib")
-model_handler = ModelHandler(model_path, preprocessor_path)
 
+# Load the model and preprocessor
+model_handler = ModelHandler()
+model_handler.model = joblib.load(model_path )
+model_handler.preprocessor = joblib.load(preprocessor_path)
 
 # Read database configuration from environment variables
 MYSQL_USER = os.getenv("MYSQL_USER", "root")
