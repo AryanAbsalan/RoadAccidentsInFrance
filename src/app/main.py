@@ -2,6 +2,7 @@ import os
 from datetime import datetime, timedelta, timezone
 from typing import List, Annotated, Optional
 
+from fastapi.responses import HTMLResponse
 import jwt
 
 from fastapi import Depends, FastAPI, HTTPException, status
@@ -16,6 +17,7 @@ from src.app.model_handler import ModelHandler
 import joblib
 from dotenv import load_dotenv
 
+from views.views import homepage 
 
 # Load environment variables from .env file
 load_dotenv()
@@ -57,8 +59,75 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
+# Description for the API
+description = """
+Road Accidents In France API helps you predict the severity of road accidents based on various parameters. 
+
+You can **predict the severity of an accident** by providing the necessary parameters.
+
+#### Request Body
+- **Driver_Age**: Age of the driver.
+- **Safety_Equipment**: Level of safety equipment used.
+- **Department_Code**: Code of the department involved.
+- **Mobile_Obstacle**: Presence of mobile obstacles.
+- **Vehicle_Category**: Category of the vehicle.
+- **Position_In_Vehicle**: Position of the driver in the vehicle.
+- **Collision_Type**: Type of collision.
+- **Number_of_Lanes**: Number of lanes involved in the accident.
+- **Time_of_Day**: Time of day when the accident occurred.
+- **Journey_Type**: Type of journey (e.g., work, leisure).
+- **Obstacle_Hit**: Whether an obstacle was hit.
+- **Road_Category**: Category of the road.
+- **Gender**: Gender of the driver.
+- **User_Category**: Category of the user.
+- **Intersection_Type**: Type of intersection.
+
+### Example Usage
+```json
+POST /predict/
+{
+    "Driver_Age": 33,
+    "Safety_Equipment": 4,
+    "Department_Code": 590,
+    "Mobile_Obstacle": 2,
+    "Vehicle_Category": 3,
+    "Position_In_Vehicle": 1,
+    "Collision_Type": 2,
+    "Number_of_Lanes": 4,
+    "Time_of_Day": 1,
+    "Journey_Type": 1,
+    "Obstacle_Hit": 1,
+    "Road_Category": 1,
+    "Gender": 1,
+    "User_Category": 1,
+    "Intersection_Type": 1
+}
+"""
+
 # FastAPI instance
-app = FastAPI()
+app = FastAPI(
+    title="Road Accidents In France API",
+    description=description,
+    summary="Predict the severity of an accident",
+    version="0.0.1",
+    contact={
+        "name": "Aryan Absalan",
+        "github": "https://github.com/AryanAbsalan",
+        "email": "Aryan.absalan@gmail.com",
+
+        "name": "Jannis Zeelen",
+        "github": "https://github.com/JannisZeelen",
+        "email": "",
+
+        "name": "Tanja Schroeder",
+        "github": "https://github.com/tanjaldir",
+        "email": "",
+    },
+    license_info={
+        "name": "Apache 2.0 - MIT License",
+        "identifier": "MIT",
+    },
+)
 
 
 # Model for creating tokens
@@ -129,7 +198,7 @@ class PredictionInput(BaseModel):
     Intersection_Type:int
 
 # Utility function to verify password
-def verify_password(plain_password, hashed_password):
+def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 # Utility function to hash the password
@@ -244,6 +313,10 @@ def startup():
         else:
             print(f"User {admin_user.username} already exists.")
 
+# Define the root endpoint
+@app.get("/", response_class=HTMLResponse)
+async def home():
+    return homepage()
 # Route to register a new user
 @app.post("/register/", response_model=UserCreate)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
