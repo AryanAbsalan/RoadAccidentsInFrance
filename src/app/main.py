@@ -32,8 +32,8 @@ model_handler.preprocessor = joblib.load(preprocessor_path)
 # Read database configuration from environment variables
 MYSQL_USER = os.getenv("MYSQL_USER", "root")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "rootpass")
-# MYSQL_HOST = os.getenv("MYSQL_HOST", "db") # for testing with docker container
-MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost") # for testing locally
+MYSQL_HOST = os.getenv("MYSQL_HOST", "db") # for testing with docker container
+# MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost") # for testing locally
 MYSQL_PORT = os.getenv("MYSQL_PORT", "3306")
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "roadaccidentsinfrance")
 
@@ -309,7 +309,6 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
 async def read_users_me(current_user: Annotated[UserModel, Depends(get_current_active_user)]):
     """ Retrieves the details of the currently authenticated user. """
     return current_user
-
 
 @app.post("/predict/")
 def get_prediction(current_user: Annotated[UserModel, Depends(get_current_active_user)],  # Ensure the user is logged in
