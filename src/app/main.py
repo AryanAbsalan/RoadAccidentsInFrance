@@ -32,8 +32,8 @@ model_handler.preprocessor = joblib.load(preprocessor_path)
 # Read database configuration from environment variables
 MYSQL_USER = os.getenv("MYSQL_USER", "root")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "rootpass")
-MYSQL_HOST = os.getenv("MYSQL_HOST", "db") # for testing with docker container
-# MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost") # for testing locally
+# MYSQL_HOST = os.getenv("MYSQL_HOST", "db") # for testing with docker container
+MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost") # for testing locally
 MYSQL_PORT = os.getenv("MYSQL_PORT", "3306")
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "roadaccidentsinfrance")
 
