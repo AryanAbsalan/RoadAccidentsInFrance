@@ -103,4 +103,5 @@ def homepage() -> HTMLResponse:
         </body>
     </html>
     """
+
     return HTMLResponse(content=html_content, status_code=200)
