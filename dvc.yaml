@@ -5,11 +5,11 @@ stages:
     - src/config.yaml
     - src/pipeline_steps/stage01_data_ingestion.py
     outs:
-    - data/raw/accidents_data_red.csv
+    - data/raw/accidents_data.csv
   data_validation:
     cmd: python src/pipeline_steps/stage02_data_validation.py
     deps:
-    - data/raw/accidents_data_red.csv
+    - data/raw/accidents_data.csv
     - src/pipeline_steps/stage02_data_validation.py
     outs:
     - data/validated/accidents_data_validated.csv
@@ -34,4 +34,4 @@ stages:
     - models/DecisionTreeClassifier_model.pkl
     - src/pipeline_steps/stage05_model_evaluation.py
     outs:
-    - reports/model_evaluation_report.txt
+    - reports/decision_tree_evaluation_report.txt
