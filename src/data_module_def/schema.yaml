@@ -1,0 +1,20 @@
+COLUMNS:
+  Driver_Age: int64
+  Safety_Equipment: int64
+  Department_Code: int64
+  Mobile_Obstacle: int64
+  Vehicle_Category: int64
+  Position_In_Vehicle: int64
+  Collision_Type: int64
+  Number_of_Lanes: int64
+  Time_of_Day: int64
+  Journey_Type: int64
+  Obstacle_Hit: int64
+  Road_Category: int64
+  Gender: int64
+  User_Category: int64
+  Intersection_Type: int64
+  Severity: int64 
+
+TARGET_COLUMN:
+  name: Severity

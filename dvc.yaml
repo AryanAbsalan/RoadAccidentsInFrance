@@ -1,0 +1,37 @@
+stages:
+  data_ingestion:
+    cmd: python src/pipeline_steps/stage01_data_ingestion.py
+    deps:
+    - src/config.yaml
+    - src/pipeline_steps/stage01_data_ingestion.py
+    outs:
+    - data/raw/accidents_data_red.csv
+  data_validation:
+    cmd: python src/pipeline_steps/stage02_data_validation.py
+    deps:
+    - data/raw/accidents_data_red.csv
+    - src/pipeline_steps/stage02_data_validation.py
+    outs:
+    - data/validated/accidents_data_validated.csv
+  data_transformation:
+    cmd: python src/pipeline_steps/stage03_data_transformation.py
+    deps:
+    - data/validated/accidents_data_validated.csv
+    - src/pipeline_steps/stage03_data_transformation.py
+    outs:
+    - data/transformed/accidents_data_transformed.csv
+  model_training:
+    cmd: python src/pipeline_steps/stage04_model_trainer.py
+    deps:
+    - data/transformed/accidents_data_transformed.csv
+    - src/pipeline_steps/stage04_model_trainer.py
+    outs:
+    - models/DecisionTreeClassifier_model.pkl
+  model_evaluation:
+    cmd: python src/pipeline_steps/stage05_model_evaluation.py
+    deps:
+    - data/validated/accidents_data_validated.csv
+    - models/DecisionTreeClassifier_model.pkl
+    - src/pipeline_steps/stage05_model_evaluation.py
+    outs:
+    - reports/model_evaluation_report.txt
