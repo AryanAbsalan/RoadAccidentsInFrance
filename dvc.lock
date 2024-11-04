@@ -14,15 +14,15 @@ stages:
     outs:
     - path: data/raw/accidents_data.csv
       hash: md5
-      md5: f1f65d14e8fd9d4b51b799879e1cbe85
-      size: 124987613
+      md5: a578bfac0972deeb75bc8b1e734c1632
+      size: 119767554
   data_validation:
     cmd: python src/pipeline_steps/stage02_data_validation.py
     deps:
     - path: data/raw/accidents_data.csv
       hash: md5
-      md5: 495f922b27ec62685aed6b7c6b47f7a4
-      size: 104577994
+      md5: f1f65d14e8fd9d4b51b799879e1cbe85
+      size: 124987613
     - path: src/pipeline_steps/stage02_data_validation.py
       hash: md5
       md5: de78f53b3cea8e100348041e28dfeaa6
@@ -30,15 +30,15 @@ stages:
     outs:
     - path: data/validated/accidents_data_validated.csv
       hash: md5
-      md5: 495f922b27ec62685aed6b7c6b47f7a4
-      size: 104577994
+      md5: f1f65d14e8fd9d4b51b799879e1cbe85
+      size: 124987613
   data_transformation:
     cmd: python src/pipeline_steps/stage03_data_transformation.py
     deps:
     - path: data/validated/accidents_data_validated.csv
       hash: md5
-      md5: 495f922b27ec62685aed6b7c6b47f7a4
-      size: 104577994
+      md5: f1f65d14e8fd9d4b51b799879e1cbe85
+      size: 124987613
     - path: src/pipeline_steps/stage03_data_transformation.py
       hash: md5
       md5: 28f264086e1cb52535d3ea0128d523c2
@@ -46,8 +46,8 @@ stages:
     outs:
     - path: data/transformed/accidents_data_transformed.csv
       hash: md5
-      md5: 96fe6d5fa01f0d575d1d89d1700581ae
-      size: 73204085
+      md5: ec43c991f5a2490082f3317448210736
+      size: 87490144
   model_training:
     cmd: python src/pipeline_steps/stage04_model_trainer.py
     deps:
