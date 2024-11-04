@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   web:
     build: .
@@ -27,6 +25,18 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+  
+  model_service:
+    build:
+      context: .
+      dockerfile: Dockerfile  
+    environment:
+      - MODEL_PATH=${MODEL_PATH}
+      - PREPROCESSOR_PATH=${PREPROCESSOR_PATH}
+      - DATASET_PATH=${DATASET_PATH}
+      - DATASET_NAME=${DATASET_NAME}
+    ports:
+      - "8001:8001"
 
 volumes:
   mysql_data:
