@@ -34,8 +34,8 @@ model_handler.preprocessor = joblib.load(preprocessor_path)
 # Read database configuration from environment variables
 MYSQL_USER = os.getenv("MYSQL_USER", "root")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "rootpass")
-# MYSQL_HOST = os.getenv("MYSQL_HOST", "db") # for testing with docker container
-MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost") # for testing locally
+MYSQL_HOST = os.getenv("MYSQL_HOST", "db") # for testing with docker container
+# MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost") # for testing locally
 MYSQL_PORT = os.getenv("MYSQL_PORT", "3306")
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "roadaccidentsinfrance")
 
@@ -87,7 +87,7 @@ You can **predict the severity of an accident** by providing the necessary param
 POST /predict/
 {
     "Driver_Age": 33,
-    "Safety_Equipment": 4,
+    "Safety_Equipment": 10,
     "Department_Code": 590,
     "Mobile_Obstacle": 2,
     "Vehicle_Category": 3,
@@ -97,9 +97,9 @@ POST /predict/
     "Time_of_Day": 1,
     "Journey_Type": 1,
     "Obstacle_Hit": 1,
-    "Road_Category": 1,
+    "Road_Category": 2,
     "Gender": 1,
-    "User_Category": 1,
+    "User_Category": 2,
     "Intersection_Type": 1
 }
 """
