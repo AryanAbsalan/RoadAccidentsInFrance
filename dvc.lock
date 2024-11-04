@@ -14,14 +14,14 @@ stages:
     outs:
     - path: data/raw/accidents_data.csv
       hash: md5
-      md5: f04b7622a24dd63f8e7c5c9e46e746da
+      md5: 495f922b27ec62685aed6b7c6b47f7a4
       size: 104577994
   data_validation:
     cmd: python src/pipeline_steps/stage02_data_validation.py
     deps:
     - path: data/raw/accidents_data.csv
       hash: md5
-      md5: f04b7622a24dd63f8e7c5c9e46e746da
+      md5: 495f922b27ec62685aed6b7c6b47f7a4
       size: 104577994
     - path: src/pipeline_steps/stage02_data_validation.py
       hash: md5
@@ -30,14 +30,14 @@ stages:
     outs:
     - path: data/validated/accidents_data_validated.csv
       hash: md5
-      md5: f04b7622a24dd63f8e7c5c9e46e746da
+      md5: 495f922b27ec62685aed6b7c6b47f7a4
       size: 104577994
   data_transformation:
     cmd: python src/pipeline_steps/stage03_data_transformation.py
     deps:
     - path: data/validated/accidents_data_validated.csv
       hash: md5
-      md5: f04b7622a24dd63f8e7c5c9e46e746da
+      md5: 495f922b27ec62685aed6b7c6b47f7a4
       size: 104577994
     - path: src/pipeline_steps/stage03_data_transformation.py
       hash: md5
@@ -69,7 +69,7 @@ stages:
     deps:
     - path: data/validated/accidents_data_validated.csv
       hash: md5
-      md5: f04b7622a24dd63f8e7c5c9e46e746da
+      md5: 495f922b27ec62685aed6b7c6b47f7a4
       size: 104577994
     - path: models/DecisionTreeClassifier_model.pkl
       hash: md5
