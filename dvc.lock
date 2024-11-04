@@ -14,8 +14,8 @@ stages:
     outs:
     - path: data/raw/accidents_data.csv
       hash: md5
-      md5: 0fbe0e2a36bb300802bfd4d4660fe7b9
-      size: 104577994
+      md5: f1f65d14e8fd9d4b51b799879e1cbe85
+      size: 124987613
   data_validation:
     cmd: python src/pipeline_steps/stage02_data_validation.py
     deps:
