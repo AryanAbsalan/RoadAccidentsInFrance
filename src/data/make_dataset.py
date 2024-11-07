@@ -72,12 +72,11 @@ if __name__ == "__main__":
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
     
     # Define paths using forward slashes for cross-platform compatibility
-    accidents_data_path = os.path.join(base_dir, "RoadAccidentsInFrance", "data", "raw", "accidents_data.csv")
-    combined_data_path = os.path.join(base_dir, "RoadAccidentsInFrance", "notebooks", "src", "data", "final", "combined_data.csv")
+    accidents_data_path = os.path.join(base_dir,  "data", "raw", "accidents_data.csv")
+    combined_data_path = os.path.join(base_dir,  "notebooks", "src", "data", "final", "combined_data.csv")
 
-    zip_file_path = os.path.join(base_dir, "RoadAccidentsInFrance", "data", "raw", "accidents_data.zip")
+    zip_file_path = os.path.join(base_dir, "data", "raw", "accidents_data.zip")
         
-
     # Create the DataMover instance and run the process
     mover = DataMover(accidents_data_path=accidents_data_path, 
                       combined_data_path=combined_data_path,
