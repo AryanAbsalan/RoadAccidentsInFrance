@@ -51,22 +51,18 @@ jobs:
         run: |
           python src\data\data_generator.py
 
-      # Step 6: Wait for 1 minutes 
-      - name: Wait for 1 minutes
-        run: |
-          timeout /t 60  # Wait 60 seconds on Windows
-
-      # Step 7: Run the make_dataset.py script
+      # Step 6: Run the make_dataset.py script
       - name: Run make_dataset.py
         run: |
           python src\data\make_dataset.py
 
-      # Step 8: Wait for 1 minutes 
+      # Step 7: Wait for 1 minutes 
       - name: Wait for 1 minutes
         run: |
-          timeout /t 60 # Wait 60 seconds on Windows
+          Start-Sleep -Seconds 60  # Wait 60 seconds in PowerShell
+        shell: pwsh
 
-      # Step 9: Run DVC pipeline
+      # Step 8: Run DVC pipeline
       - name: Run DVC pipeline (dvc repro)
         run: |
           dvc repro

@@ -27,8 +27,6 @@ class DataProcessor:
         print("Generating random data.")
         random_data = {}
 
-        print("@@@@@@@@Columns in the dataset:", self.original_data.columns)
-
         for column in self.columns_to_process:
             unique_values = self.original_data[column].unique()  # Get unique values
             random_data[column] = np.random.choice(unique_values, size=self.size, replace=True)
