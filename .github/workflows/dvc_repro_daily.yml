@@ -7,7 +7,11 @@ on:
 
 jobs:
   run-dvc-repro:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9, 3.10, 3.11, 3.12]
 
     steps:
       # Step 1: Check out the repository
@@ -18,7 +22,7 @@ jobs:
       - name: Set up Python 3.x
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: ${{ matrix.python-version }}
 
       # Step 3: Install dependencies (including DVC)
       - name: Install dependencies
