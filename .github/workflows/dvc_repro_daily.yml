@@ -1,0 +1,52 @@
+name: Daily DVC Repro
+
+on:
+  schedule:
+    - cron: '0 18 * * *'  # Run every day at 18:00 UTC
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  run-dvc-repro:
+    runs-on: windows-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # Step 3: Install dependencies (including DVC)
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install dvc  # Ensure DVC is installed
+
+      # Step 4: Configure UTF-8 encoding for Windows
+      - name: Set UTF-8 Encoding
+        shell: pwsh
+        run: |
+          $env:PYTHONIOENCODING = "utf-8"
+          $env:PYTHONUTF8 = "1"
+          [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
+      # Step 5: Run DVC pipeline
+      - name: Run DVC pipeline with dvc repro
+        shell: pwsh
+        run: |
+          # Run DVC command and log output for diagnostics
+          dvc repro > dvc_output.log 2>&1
+          # Output the log to GitHub Actions console for debugging
+          Get-Content -Path dvc_output.log -Encoding UTF8 | Write-Host
+
+      # Step 6: Optional - Upload the log as an artifact for debugging
+      - name: Upload DVC log for review
+        uses: actions/upload-artifact@v3
+        with:
+          name: dvc_output_log
+          path: dvc_output.log
