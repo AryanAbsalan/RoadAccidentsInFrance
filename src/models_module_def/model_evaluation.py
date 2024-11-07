@@ -12,9 +12,6 @@ from src.common_utils import save_json
 from custom_logger import logger
 import json
 
-import sys
-sys.setdefaultencoding('utf-8')
-
 # To fill in with your repo information
 dagshub.init(repo_owner='aryan.absalan', repo_name='RoadAccidentsInFrance', mlflow=True)
 
@@ -48,7 +45,7 @@ class ModelEvaluation:
             save_json(path=Path(self.config.metric_file_name), data=scores)
 
             # Generate and save the evaluation report
-            self.generate_report(accuracy, precision, recall, f1)
+            # self.generate_report(accuracy, precision, recall, f1)
 
             # Log parameters and metrics to MLflow
             mlflow.log_params(self.config.all_params)
@@ -81,29 +78,29 @@ class ModelEvaluation:
     #     with open(report_path, "w", encoding='utf-8') as f:
     #         f.write(f"Accuracy: {accuracy}\nPrecision: {precision}\nRecall: {recall}\nF1 Score: {f1}\n")
     #     logger.info(f"Report saved at {report_path}")
-    def generate_report(self, accuracy, precision, recall, f1):
-        # Directory for reports
-        report_dir = Path("reports")
-        report_dir.mkdir(parents=True, exist_ok=True)  # Ensure the directory exists
+    # def generate_report(self, accuracy, precision, recall, f1):
+    #     # Directory for reports
+    #     report_dir = Path("reports")
+    #     report_dir.mkdir(parents=True, exist_ok=True)  # Ensure the directory exists
 
-        # Path for the JSON report
-        json_report_path = report_dir / "decision_tree_evaluation_report.json"
-        report_data = {
-            "accuracy": accuracy,
-            "precision": precision,
-            "recall": recall,
-            "f1_score": f1
-        }
+    #     # Path for the JSON report
+    #     json_report_path = report_dir / "decision_tree_evaluation_report.json"
+    #     report_data = {
+    #         "accuracy": accuracy,
+    #         "precision": precision,
+    #         "recall": recall,
+    #         "f1_score": f1
+    #     }
         
-        # Writing to JSON file
-        with open(json_report_path, "w", encoding='utf-8') as json_file:
-            json.dump(report_data, json_file, indent=4)
-        logger.info(f"JSON report saved at {json_report_path}")
+    #     # Writing to JSON file
+    #     with open(json_report_path, "w", encoding='utf-8') as json_file:
+    #         json.dump(report_data, json_file, indent=4)
+    #     logger.info(f"JSON report saved at {json_report_path}")
         
-        # Path for the text report
-        report_path = report_dir / "decision_tree_evaluation_report.txt"
-        with open(report_path, "w", encoding='utf-8') as f:
-                        f.write("Accuracy: {} ---- Precision: {} ---- Recall: {} ---- F1 Score: {}".format(accuracy, precision, recall, f1))
-        logger.info("Text report saved at {}".format(report_path))
+    #     # Path for the text report
+    #     report_path = report_dir / "decision_tree_evaluation_report.txt"
+    #     with open(report_path, "w", encoding='utf-8') as f:
+    #                     f.write("Accuracy: {} ---- Precision: {} ---- Recall: {} ---- F1 Score: {}".format(accuracy, precision, recall, f1))
+    #     logger.info("Text report saved at {}".format(report_path))
             
 
