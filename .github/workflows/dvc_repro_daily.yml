@@ -22,7 +22,7 @@ jobs:
       - name: Set up Python 3.x
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+        python-version: ${{ matrix.python-version }}
 
       # Step 3: Install dependencies (including DVC)
       - name: Install dependencies
