@@ -65,9 +65,9 @@ if __name__ == "__main__":
     
 
     # Paths to your data files, built relative to the current script's directory
-    original_data_path = os.path.join(base_dir, "notebooks/src/data/final/data_final.csv")
-    generated_data_path = os.path.join(base_dir, "notebooks/src/data/final/generated_data.csv")
-    output_data_path = os.path.join(base_dir, "notebooks/src/data/final/combined_data.csv")
+    original_data_path = os.path.join(base_dir, "notebooks\\src\\data\\final\\data_final.csv")
+    generated_data_path = os.path.join(base_dir, "notebooks\\src\\data\\final\\generated_data.csv")
+    output_data_path = os.path.join(base_dir, "notebooks\\src\\data\\final\\combined_data.csv")
     size = 400000
     print(base_dir)
     print(original_data_path)
