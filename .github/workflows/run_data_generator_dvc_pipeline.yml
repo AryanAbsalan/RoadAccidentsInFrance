@@ -2,13 +2,12 @@ name: Run Data Generator and DVC Pipeline Daily
 
 on:
   schedule:
-    # This cron expression runs the action every day at 06:45 PM UTC
-    - cron: '45 06 * * *'
-  workflow_dispatch: # Allows manual triggering from GitHub UI
+    - cron: '30 17 * * *'  # Run at 17:30 PM UTC daily
+  workflow_dispatch:  # Allow manual triggering
 
 jobs:
   run-pipeline:
-    runs-on: ubuntu-latest  # You can change this to another runner, like windows-latest or macos-latest
+    runs-on: windows-latest  # Run specifically on Windows
 
     steps:
       # Step 1: Checkout the repository
@@ -25,30 +24,28 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Install project dependencies
-          pip install dvc  # Install DVC for pipeline execution
+          pip install -r requirements.txt
+          pip install dvc  # Install DVC
 
       # Step 4: Run the data_generator.py script
       - name: Run data_generator.py
         run: |
-          python src/data/data_generator.py
+          python src\data\data_generator.py
 
-      # Step 5: Sleep for 3 minutes 
-      - name: Wait for 3 minutes
+      # Step 5: Wait for 1 minutes 
+      - name: Wait for 1 minutes
         run: |
-          echo "Waiting for 3 minutes before running DVC pipeline..."
-          sleep 1800  # Sleep for 180 seconds (3 minutes)
+          timeout /t 60  # Wait 60 seconds on Windows
 
       # Step 6: Run the make_dataset.py script
       - name: Run make_dataset.py
         run: |
-          python src/data/make_dataset.py
+          python src\data\make_dataset.py
 
-      # Step 7: Sleep for 5 minutes 
-      - name: Wait for 5 minutes
+      # Step 7: Wait for 1 minutes 
+      - name: Wait for 1 minutes
         run: |
-          echo "Waiting for 5 minutes before running DVC pipeline..."
-          sleep 300  # Sleep for 300 seconds (5 minutes)
+          timeout /t 60 # Wait 60 seconds on Windows
 
       # Step 8: Run DVC pipeline
       - name: Run DVC pipeline (dvc repro)
