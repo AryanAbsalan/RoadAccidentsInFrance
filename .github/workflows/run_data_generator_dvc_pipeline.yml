@@ -27,27 +27,32 @@ jobs:
           pip install -r requirements.txt
           pip install dvc  # Install DVC
 
-      # Step 4: Run the data_generator.py script
+      # Step 4: Download the zip file (if it's hosted externally)
+      - name: Download data_final.zip
+        run: |
+          wget https://drive.google.com/file/d/1sGTZLIRVlQ-OvA-pZzZe6slw8IwcKRF_/view?usp=drive_link -P D:/a/RoadAccidentsInFrance/notebooks/src/data/final/
+
+      # Step 5: Run the data_generator.py script
       - name: Run data_generator.py
         run: |
           python src\data\data_generator.py
 
-      # Step 5: Wait for 1 minutes 
+      # Step 6: Wait for 1 minutes 
       - name: Wait for 1 minutes
         run: |
           timeout /t 60  # Wait 60 seconds on Windows
 
-      # Step 6: Run the make_dataset.py script
+      # Step 7: Run the make_dataset.py script
       - name: Run make_dataset.py
         run: |
           python src\data\make_dataset.py
 
-      # Step 7: Wait for 1 minutes 
+      # Step 8: Wait for 1 minutes 
       - name: Wait for 1 minutes
         run: |
           timeout /t 60 # Wait 60 seconds on Windows
 
-      # Step 8: Run DVC pipeline
+      # Step 9: Run DVC pipeline
       - name: Run DVC pipeline (dvc repro)
         run: |
           dvc repro
