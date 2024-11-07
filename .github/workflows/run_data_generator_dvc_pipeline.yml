@@ -32,6 +32,15 @@ jobs:
         run: |
           $url = "https://drive.google.com/uc?export=download&id=1q9e5vfl3Z3N3HiMNkwpDLA1rcBxr_Wd4" 
           $output = "D:\a\RoadAccidentsInFrance\notebooks\src\data\final\data_final.csv"
+
+          # Ensure the file path's directory exists
+          $dir = [System.IO.Path]::GetDirectoryName($output)
+          if (-Not (Test-Path -Path $dir)) {
+            New-Item -Path $dir -ItemType Directory
+            Write-Host "Directory created: $dir"
+          } else {
+            Write-Host "Directory already exists: $dir"
+          }
     
           # Download the file
           Invoke-WebRequest -Uri $url -OutFile $output
