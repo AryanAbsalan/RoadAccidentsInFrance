@@ -1,6 +1,9 @@
 import sys
 from pathlib import Path
 
+import sys
+sys.setdefaultencoding('utf-8')
+
 # Add parent directory to path
 parent_folder = str(Path(__file__).parent.parent.parent)
 sys.path.append(parent_folder)

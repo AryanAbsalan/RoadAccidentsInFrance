@@ -48,7 +48,7 @@ class ModelEvaluation:
             save_json(path=Path(self.config.metric_file_name), data=scores)
 
             # Generate and save the evaluation report
-            # self.generate_report(accuracy, precision, recall, f1)
+            self.generate_report(accuracy, precision, recall, f1)
 
             # Log parameters and metrics to MLflow
             mlflow.log_params(self.config.all_params)
