@@ -32,6 +32,14 @@ jobs:
         run: |
           $url = "https://drive.google.com/uc?export=download&id=1sGTZLIRVlQ-OvA-pZzZe6slw8IwcKRF_" 
           $output = "D:\a\RoadAccidentsInFrance\notebooks\src\data\final\data_final.zip"
+          
+          # Check if the directory exists, and create it if not
+          $directory = [System.IO.Path]::GetDirectoryName($output)
+          if (-not (Test-Path -Path $directory)) {
+              New-Item -Path $directory -ItemType Directory -Force
+          }
+          
+          # Download the file
           Invoke-WebRequest -Uri $url -OutFile $output
         shell: pwsh
 
