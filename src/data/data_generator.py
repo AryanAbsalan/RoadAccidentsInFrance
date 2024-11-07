@@ -20,11 +20,14 @@ class DataProcessor:
         print("Loading the original dataset.")
         self.original_data = pd.read_csv(self.original_data_path,  encoding='ISO-8859-1', delimiter=',', on_bad_lines='skip')
         print(f"Original dataset loaded with {self.original_data.shape[0]} rows.")
+        
     
     def generate_random_data(self):
         """Generate random data based on unique values in each column."""
         print("Generating random data.")
         random_data = {}
+
+        print("@@@@@@@@Columns in the dataset:", self.original_data.columns)
 
         for column in self.columns_to_process:
             unique_values = self.original_data[column].unique()  # Get unique values
