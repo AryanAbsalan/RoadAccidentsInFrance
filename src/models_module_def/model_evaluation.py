@@ -68,7 +68,7 @@ class ModelEvaluation:
         report_dir = Path("reports")
         report_dir.mkdir(parents=True, exist_ok=True)  # Ensure the directory exists
         report_path = report_dir / "decision_tree_evaluation_report.txt"
-        with open(report_path, "w") as f:
+        with open(report_path, "w", encoding='utf8') as f:
             f.write(f"Accuracy: {accuracy}\nPrecision: {precision}\nRecall: {recall}\nF1 Score: {f1}\n")
         logger.info(f"Report saved at {report_path}")
 
