@@ -20,15 +20,16 @@ class DataProcessor:
         """Load the original dataset from a zip file."""
         # Extract the zip file
         zip_file_path = self.original_data_path  # Path to the zip file
-        extract_dir = os.path.dirname(zip_file_path)  # Extract the files in the same directory as the zip
+        
+        print("extract_dir:",zip_file_path)
 
         # Extract the zip file if it doesn't exist yet
         with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
-            zip_ref.extractall(extract_dir)
-            print(f"Extracted {zip_file_path} to {extract_dir}")
+            zip_ref.extractall(zip_file_path)
+            print(f"Extracted {zip_file_path} to {zip_file_path}")
 
         # Step 3: Construct the path to the CSV file inside the extracted folder
-        csv_file_path = os.path.join(extract_dir, "data_final.csv")
+        csv_file_path = os.path.join(zip_file_path, "data_final.csv")
         
         # Step 4: Read the CSV file using pandas
         try:
