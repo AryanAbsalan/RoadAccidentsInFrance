@@ -8,9 +8,9 @@ on:
 jobs:
   run-dvc-repro:
     runs-on: ubuntu-latest
-    
+
     env:
-      DAGSHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
+      DAGSHUB_TOKEN: ${{ secrets.DEFAULT_TOKEN }}
       DAGSHUB_USER: "aryan.absalan"  # DagsHub username
       DAGSHUB_REPO: "RoadAccidentsInFrance"  # Repository name
 
