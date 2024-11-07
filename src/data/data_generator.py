@@ -64,7 +64,7 @@ if __name__ == "__main__":
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
     
     # Define paths based on the project root directory with `os.path.join`
-    original_data_path = os.path.join(base_dir, "notebooks", "src", "data", "final", "data_final.csv")
+    original_data_path = os.path.join(base_dir, "notebooks", "src", "data", "final", "data_final.csv") # "RoadAccidentsInFrance",
     generated_data_path = os.path.join(base_dir, "notebooks", "src", "data", "final", "generated_data.csv")
     output_data_path = os.path.join(base_dir, "notebooks", "src", "data", "final", "combined_data.csv")
     size = 400000
