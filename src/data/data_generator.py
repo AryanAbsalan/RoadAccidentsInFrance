@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 
 class DataProcessor:
     def __init__(self, original_data_path, generated_data_path, output_data_path, size=400000):
@@ -59,11 +60,16 @@ class DataProcessor:
 
 # Define main function
 if __name__ == "__main__":
-    # Paths to your data files
-    original_data_path = "../../notebooks/src/data/final/data_final.csv"
-    generated_data_path = "../../notebooks/src/data/final/generated_data.csv"
-    output_data_path = "../../notebooks/src/data/final/combined_data.csv"
-    size=400000
+    # Get the directory of the current script file
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    print(base_dir)
+
+    # Paths to your data files, built relative to the current script's directory
+    original_data_path = os.path.join(base_dir, "../../notebooks/src/data/final/data_final.csv")
+    generated_data_path = os.path.join(base_dir, "../../notebooks/src/data/final/generated_data.csv")
+    output_data_path = os.path.join(base_dir, "../../notebooks/src/data/final/combined_data.csv")
+    size = 400000
+    print(original_data_path)
 
     # Initialize the DataProcessor class
     processor = DataProcessor(
