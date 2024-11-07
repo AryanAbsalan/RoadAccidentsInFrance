@@ -1,0 +1,81 @@
+name: Run Data Generator and DVC Pipeline Daily
+
+on:
+  schedule:
+    - cron: '30 17 * * *'  # Run at 17:30 PM UTC daily
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  run-pipeline:
+    runs-on: windows-latest  # Run specifically on Windows
+
+    steps:
+      # Step 1: Set PowerShell and Python Encoding to UTF-8
+      - name: Set PowerShell and Python Encoding to UTF-8
+        run: |
+          $OutputEncoding = [System.Text.Encoding]::UTF8
+          [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+          $env:PYTHONIOENCODING = "utf-8"
+          $env:PYTHONUTF8 = "1"
+        shell: pwsh 
+
+      # Step 2: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 3: Set up Python
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # Step 4: Install dependencies (including DVC)
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install dvc  # Install DVC
+
+      # Step 5: Download data_final.csv from Google Drive
+      - name: Download data_final.csv from Google Drive
+        run: |
+          $url = "https://drive.google.com/uc?export=download&id=1q9e5vfl3Z3N3HiMNkwpDLA1rcBxr_Wd4" 
+          $output = "D:\a\RoadAccidentsInFrance\notebooks\src\data\final\data_final.csv"
+
+          # Ensure the file path's directory exists
+          $dir = [System.IO.Path]::GetDirectoryName($output)
+          if (-Not (Test-Path -Path $dir)) {
+            New-Item -Path $dir -ItemType Directory
+            Write-Host "Directory created: $dir"
+          } else {
+            Write-Host "Directory already exists: $dir"
+          }
+    
+          # Download the file
+          Invoke-WebRequest -Uri $url -OutFile $output
+        shell: pwsh
+
+      # Step 6: Run the data_generator.py script
+      - name: Run data_generator.py
+        run: |
+          python src\data\data_generator.py
+
+      # Step 7: Run the make_dataset.py script
+      - name: Run make_dataset.py
+        run: |
+          python src\data\make_dataset.py
+
+      # Step 8: Wait for 1 minutes 
+      - name: Wait for 1 minutes
+        run: |
+          Start-Sleep -Seconds 60  # Wait 60 seconds in PowerShell
+        shell: pwsh
+
+      # # Step 9: Run DVC pipeline without log redirection
+      # - name: Run DVC pipeline without log redirection
+      #   run: |
+      #     $OutputEncoding = [System.Text.Encoding]::UTF8
+      #     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+          
+      #     dvc repro
+      #   shell: pwsh

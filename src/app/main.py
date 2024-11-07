@@ -1,3 +1,4 @@
+import sys
 import os
 from datetime import datetime, timedelta, timezone
 from typing import List, Annotated, Optional
@@ -13,11 +14,17 @@ from sqlmodel import SQLModel, Field, create_engine, Session, select,Relationshi
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import text
 from pydantic import BaseModel
+
+# Clear any duplicates in sys.path
+sys.path = list(dict.fromkeys(sys.path))
+
+# Insert the absolute path of the 'src' directory
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
 from src.app.model_handler import ModelHandler
+from views.views import homepage
 import joblib
 from dotenv import load_dotenv
-
-from views.views import homepage 
 
 # Load environment variables from .env file
 load_dotenv()

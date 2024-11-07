@@ -109,7 +109,7 @@ venv_accidents
 
 # Git and CI/CD workflow files
 .git
-.github
+#.github # to add workflow
 *.gitignore
 
 # Jupyter Notebook checkpoints and cache
