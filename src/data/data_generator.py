@@ -18,7 +18,7 @@ class DataProcessor:
     def load_original_data(self):
         """Load the original dataset."""
         print("Loading the original dataset.")
-        self.original_data = pd.read_csv(self.original_data_path)
+        self.original_data = pd.read_csv(self.original_data_path,  encoding='ISO-8859-1', delimiter=',', on_bad_lines='skip')
         print(f"Original dataset loaded with {self.original_data.shape[0]} rows.")
     
     def generate_random_data(self):
