@@ -40,12 +40,12 @@ class DataMover:
         print("Data move and rename process completed.")
 
 if __name__ == "__main__":
-    # Get the directory of the current script file
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    # Set base_dir to the root of the project
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
 
-    # Define paths relative to the script’s location
-    raw_data_path = os.path.join(base_dir, "../../data/raw/accidents_data.csv")
-    combined_data_path = os.path.join(base_dir, "../../notebooks/src/data/final/combined_data.csv")
+    # Define paths based on the project root directory
+    raw_data_path = os.path.join(base_dir, "data/raw/accidents_data.csv")
+    combined_data_path = os.path.join(base_dir, "notebooks/src/data/final/combined_data.csv")
     print(base_dir)
     print(raw_data_path)
     print(combined_data_path)
