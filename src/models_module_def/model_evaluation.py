@@ -94,7 +94,7 @@ class ModelEvaluation:
         # Path for the text report
         report_path = report_dir / "decision_tree_evaluation_report.txt"
         with open(report_path, "w", encoding='utf-8') as f:
-            f.write(f"Accuracy: {accuracy}\nPrecision: {precision}\nRecall: {recall}\nF1 Score: {f1}\n")
+            f.write(f"Accuracy: {accuracy} ---- Precision: {precision} ---- Recall: {recall} ---- F1 Score: {f1}\n")
         logger.info(f"Text report saved at {report_path}")
 
 
