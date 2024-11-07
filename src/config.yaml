@@ -1,31 +1,31 @@
 data_ingestion:
-  root_dir: RoadAccidentsInFrance/data/raw
+  root_dir:  data/raw
   source_URL: https://drive.google.com/uc?export=download&id=1gn4Q6bOfI-uRJ6Xv2Sz7FbUeBbS68hkO # it should be accidents_data.zip with accidents_data.csv
-  local_data_file: RoadAccidentsInFrance/data/raw/accidents_data.zip
-  unzip_dir: RoadAccidentsInFrance/data/raw
+  local_data_file:  data/raw/accidents_data.zip
+  unzip_dir:  data/raw
 
 data_validation:
-  root_dir: RoadAccidentsInFrance/data
-  unzip_dir: RoadAccidentsInFrance/data/raw/accidents_data.csv
-  STATUS_FILE: RoadAccidentsInFrance/data/status.txt
-  validated_data_path: RoadAccidentsInFrance/data/validated/accidents_data_validated.csv
+  root_dir:  data
+  unzip_dir:  data/raw/accidents_data.csv
+  STATUS_FILE:  data/status.txt
+  validated_data_path:  data/validated/accidents_data_validated.csv
 data_transformation: 
-  root_dir: RoadAccidentsInFrance/data/processed
-  data_path: RoadAccidentsInFrance/data/validated/accidents_data_validated.csv
-  transform_data_path: RoadAccidentsInFrance/data/transformed/accidents_data_transformed.csv
+  root_dir:  data/processed
+  data_path:  data/validated/accidents_data_validated.csv
+  transform_data_path:  data/transformed/accidents_data_transformed.csv
 
 model_trainer:
-  root_dir: RoadAccidentsInFrance/models
-  X_train_path: RoadAccidentsInFrance/data/processed/X_train.csv
-  X_test_path: RoadAccidentsInFrance/data/processed/X_test.csv
-  y_train_path: RoadAccidentsInFrance/data/processed/y_train.csv
-  y_test_path: RoadAccidentsInFrance/data/processed/y_test.csv
-  model_name: RoadAccidentsInFrance/DecisionTreeClassifier_model.pkl
+  root_dir:  models
+  X_train_path:  data/processed/X_train.csv
+  X_test_path:  data/processed/X_test.csv
+  y_train_path:  data/processed/y_train.csv
+  y_test_path:  data/processed/y_test.csv
+  model_name:  DecisionTreeClassifier_model.pkl
 
 model_evaluation:
-  root_dir: RoadAccidentsInFrance/metrics
-  X_test_path: RoadAccidentsInFrance/data/processed/X_test.csv
-  y_test_path: RoadAccidentsInFrance/data/processed/y_test.csv
-  model_path: RoadAccidentsInFrance/models/DecisionTreeClassifier_model.pkl
-  metric_file_name: RoadAccidentsInFrance/metrics/metrics.json 
+  root_dir:  metrics
+  X_test_path:  data/processed/X_test.csv
+  y_test_path:  data/processed/y_test.csv
+  model_path:  models/DecisionTreeClassifier_model.pkl
+  metric_file_name:  metrics/metrics.json 
 
