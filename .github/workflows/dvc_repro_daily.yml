@@ -40,7 +40,7 @@ jobs:
         shell: pwsh
         run: |
           # Run DVC command and log output for diagnostics
-          dvc repro > dvc_output.log 2>&1
+          dvc repro 
           # Output the log to GitHub Actions console for debugging
           Get-Content -Path dvc_output.log -Encoding UTF8 | Write-Host
 
