@@ -12,7 +12,7 @@ from src.common_utils import save_json
 from custom_logger import logger
 
 # To fill in with your repo information
-dagshub.init(repo_owner='aryan.absalan', repo_name='RoadAccidentsInFrance', mlflow=True)
+dagshub.init(repo_owner='aryan.absalan', repo_name='RoadAccidentsInFrance', mlflow=True, rich_tracebacks=False)
 
 class ModelEvaluation:
     def __init__(self, config: ModelEvaluationConfig):
