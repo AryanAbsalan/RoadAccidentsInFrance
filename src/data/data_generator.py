@@ -60,9 +60,9 @@ class DataProcessor:
 # Define main function
 if __name__ == "__main__":
     # Paths to your data files
-    original_data_path = "notebooks/src/data/final/data_final.csv"
-    generated_data_path = "notebooks/src/data/final/generated_data.csv"
-    output_data_path = "notebooks/src/data/final/combined_data.csv"
+    original_data_path = "../../notebooks/src/data/final/data_final.csv"
+    generated_data_path = "../../notebooks/src/data/final/generated_data.csv"
+    output_data_path = "../../notebooks/src/data/final/combined_data.csv"
     size=400000
 
     # Initialize the DataProcessor class

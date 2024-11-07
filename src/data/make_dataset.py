@@ -42,8 +42,8 @@ class DataMover:
 # Example usage
 if __name__ == "__main__":
     # Define paths
-    raw_data_path = "data/raw/accidents_data.csv"
-    combined_data_path = "notebooks/src/data/final/combined_data.csv"
+    raw_data_path = "../../data/raw/accidents_data.csv"
+    combined_data_path = "../../notebooks/src/data/final/combined_data.csv"
 
     # Create the DataMover instance and run the process
     mover = DataMover(raw_data_path=raw_data_path, combined_data_path=combined_data_path)
