@@ -42,13 +42,16 @@ class DataMover:
 if __name__ == "__main__":
     # Set base_dir to the root of the project
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+    
+    # Define paths using forward slashes for cross-platform compatibility
+    raw_data_path = os.path.join(base_dir, "RoadAccidentsInFrance","data", "raw", "accidents_data.csv")
+    combined_data_path = os.path.join(base_dir,"RoadAccidentsInFrance", "notebooks", "src", "data", "final", "combined_data.csv")
 
-    # Define paths based on the project root directory
-    raw_data_path = os.path.join(base_dir, "data\\raw\\accidents_data.csv")
-    combined_data_path = os.path.join(base_dir, "notebooks\\src\\data\\final\\combined_data.csv")
-    print(base_dir)
-    print(raw_data_path)
-    print(combined_data_path)
+
+    # Print paths for verification in GitHub Actions logs
+    print("Base directory:", base_dir)
+    print("Raw data path:", raw_data_path)
+    print("Combined data path:", combined_data_path)
 
 
     # Create the DataMover instance and run the process

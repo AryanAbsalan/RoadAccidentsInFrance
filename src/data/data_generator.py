@@ -55,7 +55,7 @@ class DataProcessor:
         self.generate_random_data()
         self.combine_and_save_datasets()
         
-        print("Data processing pipeline completed.")
+        print("Generate new data completed.")
 
 
 # Define main function
@@ -63,15 +63,17 @@ if __name__ == "__main__":
     # Set base_dir to the root of the project
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
     
-
-    # Paths to your data files, built relative to the current script's directory
-    original_data_path = os.path.join(base_dir, "notebooks\\src\\data\\final\\data_final.csv")
-    generated_data_path = os.path.join(base_dir, "notebooks\\src\\data\\final\\generated_data.csv")
-    output_data_path = os.path.join(base_dir, "notebooks\\src\\data\\final\\combined_data.csv")
+    # Define paths based on the project root directory with `os.path.join`
+    original_data_path = os.path.join(base_dir, "RoadAccidentsInFrance","notebooks", "src", "data", "final", "data_final.csv")
+    generated_data_path = os.path.join(base_dir, "RoadAccidentsInFrance","notebooks", "src", "data", "final", "generated_data.csv")
+    output_data_path = os.path.join(base_dir, "RoadAccidentsInFrance","notebooks", "src", "data", "final", "combined_data.csv")
     size = 400000
-    print(base_dir)
-    print(original_data_path)
 
+    # Optional: print paths for debugging or verification
+    print("Original data path:", original_data_path)
+    print("Generated data path:", generated_data_path)
+    print("Output data path:", output_data_path)
+    
     # Initialize the DataProcessor class
     processor = DataProcessor(
         original_data_path=original_data_path,
