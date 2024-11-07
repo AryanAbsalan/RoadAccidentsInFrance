@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import os
-import zipfile
 
 class DataProcessor:
     def __init__(self, original_data_path, generated_data_path, output_data_path, size=400000):
@@ -17,27 +16,6 @@ class DataProcessor:
         ]
     
     def load_original_data(self):
-        """Load the original dataset from a zip file."""
-        # Extract the zip file
-        zip_file_path = self.original_data_path  # Path to the zip file
-        
-        print("extract_dir:",zip_file_path)
-
-        # Extract the zip file if it doesn't exist yet
-        with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
-            zip_ref.extractall(zip_file_path)
-            print(f"Extracted {zip_file_path} to {zip_file_path}")
-
-        # Step 3: Construct the path to the CSV file inside the extracted folder
-        csv_file_path = os.path.join(zip_file_path, "data_final.csv")
-        
-        # Step 4: Read the CSV file using pandas
-        try:
-            self.original_data = pd.read_csv(csv_file_path)
-            print(f"Original dataset loaded with {self.original_data.shape[0]} rows.")
-        except FileNotFoundError:
-            print(f"CSV file {csv_file_path} not found in the extracted zip.")
-            raise
         """Load the original dataset."""
         print("Loading the original dataset.")
         self.original_data = pd.read_csv(self.original_data_path)
@@ -85,7 +63,7 @@ if __name__ == "__main__":
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
     
     # Define paths based on the project root directory with `os.path.join`
-    original_data_path = os.path.join(base_dir, "notebooks", "src", "data", "final", "data_final.zip")
+    original_data_path = os.path.join(base_dir, "notebooks", "src", "data", "final", "data_final.csv")
     generated_data_path = os.path.join(base_dir, "notebooks", "src", "data", "final", "generated_data.csv")
     output_data_path = os.path.join(base_dir, "notebooks", "src", "data", "final", "combined_data.csv")
     size = 400000
