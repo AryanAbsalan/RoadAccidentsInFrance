@@ -35,6 +35,8 @@ class DataIngestion:
         Extracts the zip file into the data directory
         Function returns None
         """
+        print("@@@@@",self.config.unzip_dir)
+        print("@@@@@",self.config.local_data_file)
 
         unzip_path = self.config.unzip_dir
         os.makedirs(unzip_path, exist_ok=True)
