@@ -65,3 +65,15 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
+  
+  cadvisor:
+    image: google/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
