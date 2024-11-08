@@ -64,18 +64,3 @@ jobs:
       - name: Run make_dataset.py
         run: |
           python src\data\make_dataset.py
-
-      # Step 8: Wait for 1 minutes 
-      - name: Wait for 1 minutes
-        run: |
-          Start-Sleep -Seconds 60  # Wait 60 seconds in PowerShell
-        shell: pwsh
-
-      # # Step 9: Run DVC pipeline without log redirection
-      # - name: Run DVC pipeline without log redirection
-      #   run: |
-      #     $OutputEncoding = [System.Text.Encoding]::UTF8
-      #     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-          
-      #     dvc repro
-      #   shell: pwsh

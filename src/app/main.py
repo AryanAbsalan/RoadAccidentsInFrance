@@ -138,7 +138,7 @@ app = FastAPI(
 
         "name": "Tanja Schroeder",
         "github": "https://github.com/tanjaldir",
-        "email": "",
+        "email": "tanja.schroeder@ufz.de",
     },
     license_info={
         "name": "Apache 2.0 - MIT License",

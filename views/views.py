@@ -13,12 +13,12 @@ team_members = [
     {
         "name": "Jannis Zeelen",
         "github": "https://github.com/JannisZeelen",
-        "email": "",
+        "email": "Jannis.Zeelen@gmail.com",
     },
     {
         "name": "Tanja Schroeder",
         "github": "https://github.com/tanjaldir",
-        "email": "",
+        "email": "tanja.schroeder@ufz.de",
     },
 ]
 
