@@ -1,0 +1,64 @@
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
+    mysql_data: {}
+
+services:
+  web:
+    build: .
+    container_name: fastapi_app_accidents
+    ports:
+      - "8000:8000"
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_HOST=db
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db_accidents
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+  
+  model_service:
+    container_name: model_accidents
+    build:
+      context: .
+      dockerfile: Dockerfile  
+    environment:
+      - MODEL_PATH=${MODEL_PATH}
+      - PREPROCESSOR_PATH=${PREPROCESSOR_PATH}
+      - DATASET_PATH=${DATASET_PATH}
+      - DATASET_NAME=${DATASET_NAME}
+    ports:
+      - "8001:8001"
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus_accidents
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus_data/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana_accidents
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
