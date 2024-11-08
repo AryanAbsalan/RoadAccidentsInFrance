@@ -24,7 +24,7 @@ dagshub.init(
     repo_owner=os.getenv("DAGSHUB_USER"),
     repo_name=os.getenv("DAGSHUB_REPO"),
     mlflow=True,
-    token=os.getenv("DAGSHUB_TOKEN")
+    dvc=True
 )
 
 class ModelEvaluation:
