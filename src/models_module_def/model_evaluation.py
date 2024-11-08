@@ -19,7 +19,13 @@ from custom_logger import logger
 import json
 
 # To fill in with your repo information
-dagshub.init(repo_owner='aryan.absalan', repo_name='RoadAccidentsInFrance', mlflow=True)
+# dagshub.init(repo_owner='aryan.absalan', repo_name='RoadAccidentsInFrance', mlflow=True)
+dagshub.init(
+    repo_owner=os.getenv("DAGSHUB_USER"),
+    repo_name=os.getenv("DAGSHUB_REPO"),
+    mlflow=True,
+    token=os.getenv("DAGSHUB_TOKEN")
+)
 
 class ModelEvaluation:
     def __init__(self, config: ModelEvaluationConfig):
