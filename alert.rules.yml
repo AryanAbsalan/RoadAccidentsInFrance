@@ -2,10 +2,11 @@ groups:
   - name: container-alerts
     rules:
       - alert: ContainerDown
-        expr: up{job="cadvisor"} == 0  # Replace `job="cadvisor"` with your job label if needed
-        for: 1m                        # Wait 2 minutes before firing the alert
+        expr: up{job="fastapi_app_accidents"} == 0  
+        for: 1m                                     # Wait 1 minute before firing the alert
         labels:
           severity: critical
         annotations:
-          summary: "Container {{ $labels.container_label_com_docker_swarm_service_name }} is down"
-          description: "Container {{ $labels.container_label_com_docker_swarm_service_name }} has not been running for more than 2 minutes."
+          summary: "Container {{ $labels.instance }} is down"
+          description: "Container instance {{ $labels.instance }} has not been running for more than 1 minute."
+

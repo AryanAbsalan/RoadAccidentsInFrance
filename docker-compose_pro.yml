@@ -55,7 +55,7 @@ services:
     volumes:
       - ./prometheus_data/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./alert.rules.yaml:/etc/prometheus/alert.rules.yaml # Mount alert_rules.yaml
-      - ./test_alert.yml:/etc/prometheus/test_alert.yml     # Mount test_alert.yml
+      # - ./test_alert.yml:/etc/prometheus/test_alert.yml     # Mount test_alert.yml
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
