@@ -6,6 +6,9 @@ volumes:
 services:
   web:
     build: .
+    command: uvicorn src.app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    volumes:
+      - ./src/:/usr/src/app/
     container_name: fastapi_app_accidents
     ports:
       - "8000:8000"
@@ -17,7 +20,7 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
     depends_on:
       - db
-
+  
   db:
     image: mysql:8.0
     container_name: mysql_db_accidents

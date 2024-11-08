@@ -26,8 +26,14 @@ from views.views import homepage
 import joblib
 from dotenv import load_dotenv
 
+
 # Load environment variables from .env file
 load_dotenv()
+
+from prometheus_client import Summary
+
+# Define the Summary metric
+inference_time_summary = Summary('inference_time_seconds', 'Time taken for inference')
 
 # Read model path from environment variables and initialize model_handler
 model_path = os.getenv("MODEL_PATH", "models/decision_tree_model.joblib")
@@ -426,7 +432,8 @@ def get_prediction(current_user: Annotated[UserModel, Depends(get_current_active
     ]
     
     # Get prediction from the model
-    predicted_severity = model_handler.predict(features)
+    with inference_time_summary.time():
+        predicted_severity = model_handler.predict(features)
 
     print("\t\t\t ******* predicted_severity: " , predicted_severity)
     
