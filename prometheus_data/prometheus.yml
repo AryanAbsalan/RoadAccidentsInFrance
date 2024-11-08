@@ -9,3 +9,13 @@ scrape_configs:
   - job_name: 'cadvisor'
     static_configs:
       - targets: ['cadvisor:8080']
+  
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - 'alertmanager:9093'  # Alertmanager service URL
+
+rule_files:
+  - '/etc/prometheus/alert.rules.yaml '  # Include the alert rule file
+  - '/etc/prometheus/test_alert.yml'     # Include the test alert rule file
