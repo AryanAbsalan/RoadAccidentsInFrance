@@ -30,10 +30,14 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-from prometheus_client import Summary
+
+from prometheus_client import Summary, generate_latest, CONTENT_TYPE_LATEST, Counter
+from starlette.responses import Response
+import time
 
 # Define the Summary metric
-inference_time_summary = Summary('inference_time_seconds', 'Time taken for inference')
+REQUEST_COUNT = Counter("http_requests_total", "Total number of HTTP requests", ["handler"])
+INFERENCE_TIME = Summary('inference_time_seconds', 'Time taken for inference')
 
 # Read model path from environment variables and initialize model_handler
 model_path = os.getenv("MODEL_PATH", "models/decision_tree_model.joblib")
@@ -431,9 +435,15 @@ def get_prediction(current_user: Annotated[UserModel, Depends(get_current_active
         data.Intersection_Type
     ]
     
+    REQUEST_COUNT.labels(handler="/predict").inc()
+    start_time = time.time()
+    
     # Get prediction from the model
-    with inference_time_summary.time():
+    with INFERENCE_TIME.time():
         predicted_severity = model_handler.predict(features)
+
+    inference_duration = time.time() - start_time
+    INFERENCE_TIME.observe(inference_duration)
 
     print("\t\t\t ******* predicted_severity: " , predicted_severity)
     
@@ -470,3 +480,6 @@ def get_prediction(current_user: Annotated[UserModel, Depends(get_current_active
         "user": current_user.username
     }
     
+@app.get("/metrics")
+def metrics():
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
