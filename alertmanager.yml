@@ -1,9 +1,9 @@
 global:
-  smtp_smarthost: 'prometheus.datascientest@gmail.com:587'            # SMTP server and port
-  smtp_from: 'smtp.gmail.com:465'                                     # Sender email address
-  smtp_auth_username: 'prometheus.datascientest@gmail.com'            # SMTP username
+  smtp_smarthost: 'smtp.gmail.com:587'           # Correct SMTP server and port
+  smtp_from: 'prometheus.datascientest@gmail.com'  # Sender email address (this must be a valid email)
+  smtp_auth_username: 'prometheus.datascientest@gmail.com'  # Username for SMTP authentication
   smtp_auth_password: 'qsyhonvlraonufcg'                              # SMTP password
-  smtp_require_tls: true
+  smtp_require_tls: true  # Ensure TLS is enabled for secure communication
 
 route:
   receiver: 'RoadAccidentsInFrance'
