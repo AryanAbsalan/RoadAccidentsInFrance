@@ -128,24 +128,21 @@ app = FastAPI(
     summary="Predict the severity of an accident",
     version="0.0.1",
     contact={
-        "name": "Aryan Absalan",
-        "github": "https://github.com/AryanAbsalan",
-        "email": "Aryan.absalan@gmail.com",
-
         "name": "Jannis Zeelen",
         "github": "https://github.com/JannisZeelen",
         "email": "Jannis.Zeelen@gmail.com",
-
         "name": "Tanja Schroeder",
         "github": "https://github.com/tanjaldir",
         "email": "tanja.schroeder@ufz.de",
+        "name": "Aryan Absalan",
+        "github": "https://github.com/AryanAbsalan",
+        "email": "Aryan.absalan@gmail.com",
     },
     license_info={
         "name": "Apache 2.0 - MIT License",
         "identifier": "MIT",
     },
 )
-
 
 # Model for creating tokens
 class Token(BaseModel):
@@ -400,6 +397,7 @@ async def read_users_me(current_user: Annotated[UserModel, Depends(get_current_a
     """ Retrieves the details of the currently authenticated user. """
     return current_user
 
+# Route to get prediction for accident severity
 @app.post("/predict/")
 def get_prediction(current_user: Annotated[UserModel, Depends(get_current_active_user)],  # Ensure the user is logged in
                    data: PredictionInput, 
@@ -479,7 +477,14 @@ def get_prediction(current_user: Annotated[UserModel, Depends(get_current_active
         "id": prediction_entry.id,
         "user": current_user.username
     }
-    
+
+# Route to exposes Prometheus-compatible metrics   
 @app.get("/metrics")
 def metrics():
+    """
+    Exposes Prometheus-compatible metrics for monitoring the application's performance.
+    This endpoint returns a set of metrics in the Prometheus text format, allowing for monitoring 
+    and observability of various aspects of the application, such as request counts, response 
+    times, and resource usage. 
+    """
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
