@@ -23,13 +23,14 @@ import json
 # To fill in with your repo information
 # dagshub.init(repo_owner='aryan.absalan', repo_name='RoadAccidentsInFrance', mlflow=True)
 dagshub.init(
-    repo_owner="aryan.absalan",
-    repo_name="RoadAccidentsInFrance",
+    repo_owner=os.getenv("DAGSHUB_USER"),
+    repo_name=os.getenv("DAGSHUB_REPO"),
     mlflow=True,
     dvc=True
 )
 
-dagshub.auth.add_app_token("1a7daf06cec846e1e379bd5b50446518d187e4a5")
+token = os.getenv("DAGSHUB_TOKEN")
+dagshub.auth.add_app_token(token)
 
 class ModelEvaluation:
     def __init__(self, config: ModelEvaluationConfig):
