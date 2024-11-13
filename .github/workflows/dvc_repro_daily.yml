@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DAGSHUB_TOKEN: ${{ secrets.DEFAULT_TOKEN }}
-      DAGSHUB_USER: "aryan.absalan"  # DagsHub username
-      DAGSHUB_REPO: "RoadAccidentsInFrance"  # Repository name
+      DAGSHUB_USER: aryan.absalan  # DagsHub username
+      DAGSHUB_REPO: RoadAccidentsInFrance  # Repository name
+      DAGSHUB_TOKEN: 957427621acc6fa133e88261c766a8a36afe7712
 
     steps:
       # Step 1: Check out the repository

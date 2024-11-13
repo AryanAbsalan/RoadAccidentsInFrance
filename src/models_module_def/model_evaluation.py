@@ -1,3 +1,5 @@
+import dagshub.auth
+import dagshub.auth.token_auth
 import pandas as pd
 import numpy as np
 import mlflow
@@ -26,6 +28,9 @@ dagshub.init(
     mlflow=True,
     dvc=True
 )
+
+token = os.getenv("DAGSHUB_TOKEN")
+dagshub.auth.add_app_token(token)
 
 class ModelEvaluation:
     def __init__(self, config: ModelEvaluationConfig):
